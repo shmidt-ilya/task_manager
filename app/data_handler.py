@@ -13,3 +13,4 @@ def write_task_to_csv(task):
             csvfile.seek(1)
             data['task_id'] = sum(1 for line in csv.reader(csvfile))
         writer.writerows([data])
+    return data
