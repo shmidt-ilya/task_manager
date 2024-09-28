@@ -1,5 +1,6 @@
 import csv
 
+
 def write_task_to_csv(task):
     with open('tasks.csv', 'a+', newline='') as csvfile:
         fields = list(task.dict().keys())
@@ -14,3 +15,15 @@ def write_task_to_csv(task):
             data['task_id'] = sum(1 for line in csv.reader(csvfile))
         writer.writerows([data])
     return data
+
+
+def read_tasks_from_csv():
+    try:
+        csvfile = open('tasks.csv')
+    except FileNotFoundError:
+        return None
+    else:
+        with csvfile:
+            task_list = [{k: v for k, v in row.items()}
+                         for row in csv.DictReader(csvfile)]
+        return task_list
