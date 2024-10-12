@@ -27,3 +27,20 @@ def read_tasks_from_csv():
             task_list = [{k: v for k, v in row.items()}
                          for row in csv.DictReader(csvfile)]
         return task_list
+
+
+def read_task_from_csv(task_id):
+    try:
+        csvfile = open('tasks.csv')
+    except FileNotFoundError:
+        return None
+    else:
+        with csvfile:
+            rows = csv.reader(csvfile)
+            headers = next(rows)
+            for row in rows:
+                if row[3] == str(task_id):
+                    task = dict(zip(headers, row))
+                    return task
+            else:
+                return None

@@ -1,7 +1,8 @@
 from fastapi import APIRouter, status, HTTPException
 from ..schemas import task as schema_task
 from typing import List
-from app.data_handler import write_task_to_csv, read_tasks_from_csv
+from app.data_handler import (write_task_to_csv, read_tasks_from_csv,
+                              read_task_from_csv)
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
@@ -22,3 +23,16 @@ def read_tasks():
             detail=f"test"
         )
     return tasks
+
+
+@router.get("/{task_id}", response_model=schema_task.TaskRead)
+def read_task_by_id(task_id: int):
+    task = read_task_from_csv(task_id)
+
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Task with ID {task_id} not found"
+        )
+
+    return task
