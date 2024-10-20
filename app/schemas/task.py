@@ -2,14 +2,11 @@ from datetime import date
 from pydantic import BaseModel
 
 
-class TaskCreate(BaseModel):
+class TaskBase(BaseModel):
     task_description: str
     assignee: str
     due_date: date
 
 
-class TaskRead(BaseModel):
+class TaskWithId(TaskBase):
     task_id: int
-    task_description: str
-    assignee: str
-    due_date: date
