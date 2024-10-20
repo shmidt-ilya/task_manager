@@ -57,3 +57,11 @@ def update_task_by_id(task_id: int, data_for_update: dict):
         )
 
     return task
+
+
+@router.delete("/{task_id}", status_code=status.HTTP_200_OK)
+def delete_task_by_id(task_id: int):
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        detail=f"Unable to delete task with ID {task_id}: method is not implemented yet."
+    )
