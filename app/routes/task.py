@@ -20,7 +20,7 @@ def read_tasks():
     if tasks is None:
         raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
-            detail=f"test"
+            detail=f"The task list is empty."
         )
     return tasks
 
