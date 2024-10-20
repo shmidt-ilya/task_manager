@@ -29,7 +29,7 @@ def read_tasks_from_csv():
         return None if not task_list else task_list
 
 
-def read_task_from_csv(task_id):
+def read_task_from_csv(task_id, return_line_num=False):
     try:
         csvfile = open('tasks.csv', 'r')
     except FileNotFoundError:
@@ -44,6 +44,26 @@ def read_task_from_csv(task_id):
             for row in rows:
                 if row[3] == str(task_id):
                     task = dict(zip(headers, row))
-                    return task
+                    if return_line_num:
+                        return rows.line_num, task
+                    else:
+                        return task
             else:
                 return None
+
+def update_task_in_csv(task_id, data_for_update):
+    if not (found_task := read_task_from_csv(task_id, return_line_num=True)):
+        return None
+
+    rows_line_num, task = found_task
+    task.update(data_for_update)
+
+    with open('tasks.csv', 'r') as read_file:
+        rows = list(csv.reader(read_file))
+        rows[rows_line_num-1] = list(task.values())
+
+    with open('tasks.csv', 'w') as write_file:
+        writer = csv.writer(write_file)
+        writer.writerows(rows)
+
+    return task
