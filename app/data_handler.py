@@ -19,25 +19,28 @@ def write_task_to_csv(task):
 
 def read_tasks_from_csv():
     try:
-        csvfile = open('tasks.csv')
+        csvfile = open('tasks.csv', 'r')
     except FileNotFoundError:
         return None
     else:
         with csvfile:
             task_list = [{k: v for k, v in row.items()}
                          for row in csv.DictReader(csvfile)]
-        return task_list
+        return None if not task_list else task_list
 
 
 def read_task_from_csv(task_id):
     try:
-        csvfile = open('tasks.csv')
+        csvfile = open('tasks.csv', 'r')
     except FileNotFoundError:
         return None
     else:
         with csvfile:
             rows = csv.reader(csvfile)
-            headers = next(rows)
+            try:
+                headers = next(rows)
+            except StopIteration:
+                return None
             for row in rows:
                 if row[3] == str(task_id):
                     task = dict(zip(headers, row))
