@@ -63,5 +63,6 @@ def update_task_by_id(task_id: int, data_for_update: dict):
 def delete_task_by_id(task_id: int):
     raise HTTPException(
         status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail=f"Unable to delete task with ID {task_id}: method is not implemented yet."
+        detail=f"Unable to delete task with ID {task_id}: "
+               f"method is not implemented yet."
     )
