@@ -8,13 +8,13 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED,
-             response_model=schema_task.TaskWithId)
-def create_task(task: schema_task.TaskBase):
+             response_model=schema_task.TaskRead)
+def create_task(task: schema_task.TaskCreate):
     new_task = write_task_to_csv(task)
     return new_task
 
 
-@router.get("/", status_code=status.HTTP_200_OK, response_model=List[schema_task.TaskWithId])
+@router.get("/", status_code=status.HTTP_200_OK, response_model=List[schema_task.TaskRead])
 def read_tasks():
     tasks = read_tasks_from_csv()
     if tasks is None:
@@ -25,7 +25,7 @@ def read_tasks():
     return tasks
 
 
-@router.get("/{task_id}", response_model=schema_task.TaskWithId)
+@router.get("/{task_id}", response_model=schema_task.TaskRead)
 def read_task_by_id(task_id: int):
     task = read_task_from_csv(task_id)
 
@@ -38,9 +38,9 @@ def read_task_by_id(task_id: int):
     return task
 
 
-@router.patch("/{task_id}", status_code=status.HTTP_200_OK, response_model=schema_task.TaskWithId)
+@router.patch("/{task_id}", status_code=status.HTTP_200_OK, response_model=schema_task.TaskRead)
 def update_task_by_id(task_id: int, data_for_update: dict):
-    task_fields = set(schema_task.TaskBase.model_fields.keys())
+    task_fields = set(schema_task.TaskCreate.model_fields.keys())
 
     if not set(data_for_update.keys()) <= task_fields:
         raise HTTPException(
