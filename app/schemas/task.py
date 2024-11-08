@@ -4,7 +4,6 @@ from pydantic import BaseModel, Field
 
 class TaskCreate(BaseModel):
     task_description: str = Field(
-        default="Новая задача",
         description="Описание задачи",
         max_length=300
     )
