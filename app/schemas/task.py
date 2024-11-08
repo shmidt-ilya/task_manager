@@ -1,6 +1,15 @@
 from datetime import date, timedelta
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, Field, BeforeValidator
+from typing import Optional, Annotated, TypeAlias
+
+
+def _empty_str_or_none(value: str | None) -> None:
+    if value is None or value == "":
+        return None
+    raise ValueError("Expected empty value")
+
+
+EmptyStrOrNone: TypeAlias = Annotated[None, BeforeValidator(_empty_str_or_none)]
 
 
 class TaskCreate(BaseModel):
@@ -20,3 +29,4 @@ class TaskCreate(BaseModel):
 
 class TaskRead(TaskCreate):
     task_id: int
+    due_date: EmptyStrOrNone | date
