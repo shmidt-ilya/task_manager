@@ -10,6 +10,9 @@ class TaskCreate(BaseModel):
     )
     assignee: str
     due_date: Optional[date] = Field(
+        description="Крайний срок исполнения задачи. "
+                    "Не допускаются даты, более ранние, "
+                    "чем сегодняшняя.",
         gt=date.today() - timedelta(days=1),
         default_factory=lambda: date.today() + timedelta(days=1)
     )
