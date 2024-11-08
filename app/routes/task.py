@@ -8,7 +8,8 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED,
-             response_model=schema_task.TaskRead)
+             response_model=schema_task.TaskRead,
+             summary = 'Добавить задачу')
 def create_task(task: schema_task.TaskCreate):
     """
     Добавить задачу.
