@@ -10,6 +10,7 @@ class TaskCreate(BaseModel):
     )
     assignee: str
     due_date: Optional[date] = Field(
+        gt=date.today() - timedelta(days=1),
         default_factory=lambda: date.today() + timedelta(days=1)
     )
 
