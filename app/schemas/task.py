@@ -1,5 +1,6 @@
 from datetime import date
 from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class TaskCreate(BaseModel):
@@ -8,7 +9,7 @@ class TaskCreate(BaseModel):
         max_length=300
     )
     assignee: str
-    due_date: date
+    due_date: Optional[date] = Field(default=None)
 
 
 class TaskRead(TaskCreate):
