@@ -1,8 +1,9 @@
 from fastapi import APIRouter, status, HTTPException
 from ..schemas import task as schema_task
-from typing import List
+from typing import List, Annotated
 from app.data_handler import (write_task_to_csv, read_tasks_from_csv,
                               read_task_from_csv, update_task_in_csv)
+from ..api_docs import request_examples
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
@@ -10,7 +11,10 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 @router.post("/", status_code=status.HTTP_201_CREATED,
              response_model=schema_task.TaskRead,
              summary = 'Добавить задачу')
-def create_task(task: schema_task.TaskCreate):
+def create_task(task: Annotated[
+                        schema_task.TaskCreate,
+                        request_examples.example_create_task
+    ]):
     """
     Добавить задачу.
     """
