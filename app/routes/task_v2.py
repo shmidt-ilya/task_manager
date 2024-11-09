@@ -1,15 +1,12 @@
 from fastapi import APIRouter, status, Depends
 from sqlalchemy import text
-from sqlmodel import Session
+from sqlmodel import Session, select
 from app.db import get_session
 
 router = APIRouter(prefix="/v2/tasks", tags=["Tasks"])
 
 
-@router.get("/testdb", status_code=status.HTTP_200_OK)
+@router.get("/test-db", status_code=status.HTTP_200_OK)
 def test_database(session: Session = Depends(get_session)):
-    sql = text("""
-        SELECT 'Hello', 'world'
-    """)
-    result = session.execute(sql).fetchall()
-    return dict(result)
+    result = session.exec(select(text("'Hello world'"))).all()
+    return result
