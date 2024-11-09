@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from pydantic import BaseModel, Field, BeforeValidator
 from typing import Optional, Annotated, TypeAlias
+from sqlmodel import SQLModel, Field as SQLField
 
 
 def _empty_str_or_none(value: str | None) -> None:
@@ -30,3 +31,8 @@ class TaskCreate(BaseModel):
 class TaskRead(TaskCreate):
     task_id: int
     due_date: EmptyStrOrNone | date
+
+
+class Task(SQLModel, TaskRead, table=True):
+    task_id: int = SQLField(default=None, nullable=False, primary_key=True)
+    due_date: date
