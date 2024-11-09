@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from app.routes import task
+from app.routes import task, task_v2
+
 
 app = FastAPI(
     title="Система управления задачами",
@@ -19,3 +20,4 @@ app = FastAPI(
 
 
 app.include_router(task.router)
+app.include_router(task_v2.router)
