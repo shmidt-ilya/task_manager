@@ -1,8 +1,15 @@
 from fastapi import FastAPI
 from app.routes import task, task_v2
+from contextlib import asynccontextmanager
+from app.db import init_database
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_database()
+    yield
 
 app = FastAPI(
+    lifespan=lifespan,
     title="Система управления задачами",
     description="Простейшая система управления задачами, основанная на "
                 "фреймворке FastAPI.",
@@ -17,7 +24,6 @@ app = FastAPI(
         "url": "https://opensource.org/licenses/MIT",
     }
 )
-
 
 app.include_router(task.router)
 app.include_router(task_v2.router)
