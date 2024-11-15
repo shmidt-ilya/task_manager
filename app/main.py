@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.routes import task, task_v2
+from app.routes import (task, task_v2, utils)
 from contextlib import asynccontextmanager
 from app.db import init_database
 
@@ -7,6 +8,7 @@ from app.db import init_database
 async def lifespan(app: FastAPI):
     init_database()
     yield
+
 
 app = FastAPI(
     lifespan=lifespan,
@@ -27,3 +29,4 @@ app = FastAPI(
 
 app.include_router(task.router)
 app.include_router(task_v2.router)
+app.include_router(utils.router)
