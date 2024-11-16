@@ -1,5 +1,6 @@
-from fastapi import APIRouter, status, Depends, HTTPException
 import asyncio
+import time
+from sqlalchemy.sql import text
 import httpx
 from fastapi import APIRouter, status, Depends, HTTPException, Response
 from sqlmodel import select
@@ -29,6 +30,7 @@ async def read_tasks_async(session: AsyncSession = Depends(get_async_session)):
 async def read_tasks_for_day(response: Response,
                              session: AsyncSession = Depends(get_async_session),
                              due_date: date = date.today()):
+    start = time.time()
     async def query_db(due_date_param):
         statement = (select(schema_task.Task)
                      .where(schema_task.Task.due_date == due_date_param))
@@ -40,12 +42,16 @@ async def read_tasks_for_day(response: Response,
     res = await asyncio.gather(
         query_db(due_date),
         http_client.get(f"https://isdayoff.ru/{due_date}"),
+        #session.execute(text("SELECT pg_sleep(5)")),
+        #http_client.get("https://httpbin.org/delay/10"),
     )
 
+    elapsed_seconds = time.time() - start
     output = [{
          "due_date": due_date,
          "is_day_off": res[1].text,
          "tasks": res[0]
     }]
 
+    response.headers["X-Completed-In"] = f"{elapsed_seconds:.3f} seconds"
     return output
