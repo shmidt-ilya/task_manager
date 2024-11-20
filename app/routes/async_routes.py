@@ -48,7 +48,7 @@ async def read_tasks_for_day(response: Response,
 
     elapsed_seconds = time.time() - start
     output = [{
-         "due_date": due_date,
+        "due_date": due_date,
         "is_day_off": True if res[1].text == "1" else False,
         "tasks": res[0]
     }]
