@@ -1,4 +1,5 @@
 import asyncio
+import threading
 import time
 from sqlalchemy.sql import text
 import httpx
@@ -8,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db import get_async_session
 from ..schemas import task as schema_task
 from typing import List
-from datetime import date
+from datetime import date, datetime
 
 router = APIRouter(prefix="/v2/async", tags=["Асинхронные операции"])
 
@@ -55,3 +56,33 @@ async def read_tasks_for_day(response: Response,
 
     response.headers["X-Completed-In"] = f"{elapsed_seconds:.3f} seconds"
     return output
+
+
+results = {}
+
+
+async def async_job(job_id: int):
+    start = datetime.now().strftime("%H:%M:%S")
+    await asyncio.sleep(20)
+    finish = datetime.now().strftime("%H:%M:%S")
+    results[job_id] = f"Job {job_id} started at {start} and finished at {finish}"
+
+
+@router.post("/start-job")
+async def start_job(job_id: int):
+    if not job_id:
+        raise HTTPException(status_code=400, detail="job_id is required")
+
+    loop = asyncio.new_event_loop()
+    threading.Thread(target=lambda: loop.run_until_complete(async_job(job_id))).start()
+
+    return {"message": "Job started", "job_id": job_id}
+
+
+@router.get("/get-job-result/{job_id}")
+async def get_job_result(job_id: int):
+    result = results.get(job_id)
+    if result is None:
+        return {"message": f"Job {job_id} is still running or does not exist"}
+    else:
+        return {"result": result}
