@@ -35,8 +35,8 @@ class TaskRead(TaskCreate):
 
 class User(SQLModel, table=True):
     user_id: int = SQLField(default=None, nullable=False, primary_key=True)
-    email: str
-    password: str
+    email: str = SQLField(nullable=True, unique_items=True)
+    password: str | None
     name: str
 
 
