@@ -70,7 +70,7 @@ async def async_job(job_id: str):
     results[job_id] = f"Job {job_id} started at {start} and finished at {finish}"
 
 
-@router.post("/start-job", status_code=status.HTTP_200_OK)
+@router.post("/start-job", status_code=status.HTTP_202_ACCEPTED)
 async def start_job():
     job_id = shortuuid.uuid()
 
@@ -80,12 +80,18 @@ async def start_job():
     return {"message": "Job started", "job_id": job_id}
 
 
-@router.get("/get-job-result/{job_id}")
+@router.get("/get-job-result/{job_id}", status_code=status.HTTP_200_OK)
 async def get_job_result(job_id: str):
     result = results.get(job_id)
     if result is None:
-        return {"message": f"Job {job_id} does not exist"}
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Job {job_id} does not exist"
+        )
     elif result == "pending":
-        return {"message": f"Job {job_id} is still running"}
+        raise HTTPException(
+            status_code=status.HTTP_202_ACCEPTED,
+            detail=f"Job {job_id} is still running"
+        )
     else:
         return {"result": result}
