@@ -5,7 +5,7 @@ from app.data_handler import (write_task_to_csv, read_tasks_from_csv,
                               read_task_from_csv, update_task_in_csv)
 from ..api_docs import request_examples
 
-router = APIRouter(prefix="/v1/tasks", tags=["Tasks"])
+router = APIRouter(prefix="/v1/tasks", tags=["Управление задачами в файле"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED,

@@ -5,7 +5,7 @@ from ..schemas import task as schema_task
 from typing import Annotated, List
 from ..api_docs import request_examples
 
-router = APIRouter(prefix="/v2/tasks", tags=["Tasks"])
+router = APIRouter(prefix="/v2/tasks", tags=["Управление задачами в БД"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED,
