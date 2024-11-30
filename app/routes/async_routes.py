@@ -10,6 +10,7 @@ from app.db import get_async_session
 from ..schemas import task as schema_task
 from typing import List
 from datetime import date, datetime
+import shortuuid
 
 router = APIRouter(prefix="/v2/async", tags=["Асинхронные операции"])
 
@@ -61,17 +62,17 @@ async def read_tasks_for_day(response: Response,
 results = {}
 
 
-async def async_job(job_id: int):
+async def async_job(job_id: str):
     start = datetime.now().strftime("%H:%M:%S")
+    results[job_id] = "pending"
     await asyncio.sleep(20)
     finish = datetime.now().strftime("%H:%M:%S")
     results[job_id] = f"Job {job_id} started at {start} and finished at {finish}"
 
 
-@router.post("/start-job")
-async def start_job(job_id: int):
-    if not job_id:
-        raise HTTPException(status_code=400, detail="job_id is required")
+@router.post("/start-job", status_code=status.HTTP_200_OK)
+async def start_job():
+    job_id = shortuuid.uuid()
 
     loop = asyncio.new_event_loop()
     threading.Thread(target=lambda: loop.run_until_complete(async_job(job_id))).start()
@@ -80,9 +81,11 @@ async def start_job(job_id: int):
 
 
 @router.get("/get-job-result/{job_id}")
-async def get_job_result(job_id: int):
+async def get_job_result(job_id: str):
     result = results.get(job_id)
     if result is None:
-        return {"message": f"Job {job_id} is still running or does not exist"}
+        return {"message": f"Job {job_id} does not exist"}
+    elif result == "pending":
+        return {"message": f"Job {job_id} is still running"}
     else:
         return {"result": result}
