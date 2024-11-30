@@ -33,6 +33,21 @@ class TaskRead(TaskCreate):
     due_date: EmptyStrOrNone | date
 
 
+class User(SQLModel, table=True):
+    user_id: int = SQLField(default=None, nullable=False, primary_key=True)
+    email: str
+    password: str
+    name: str
+
+
+class Project(SQLModel, table=True):
+    project_id: int = SQLField(default=None, nullable=False, primary_key=True)
+    project_name: str
+    project_description: str | None
+
+
 class Task(SQLModel, TaskRead, table=True):
     task_id: int = SQLField(default=None, nullable=False, primary_key=True)
     due_date: date
+    assignee: int = SQLField(foreign_key="user.user_id")
+    project: int = SQLField(default=None, nullable=True, foreign_key="project.project_id")

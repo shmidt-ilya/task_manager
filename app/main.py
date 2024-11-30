@@ -1,16 +1,16 @@
 from fastapi import FastAPI
 from app.routes import (task, task_v2, utils, async_routes)
-from contextlib import asynccontextmanager
-from app.db import init_database
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    init_database()
-    yield
+#from contextlib import asynccontextmanager  # Uncomment if you need to create tables on app start >>>
+#from app.db import init_database
+#
+#@asynccontextmanager
+#async def lifespan(app: FastAPI):
+#    init_database()
+#    yield                                   # <<< Uncomment if you need to create tables on app start
 
 
 app = FastAPI(
-    lifespan=lifespan,
+    #lifespan=lifespan,  # Uncomment if you need to create tables on app start
     title="Система управления задачами",
     description="Простейшая система управления задачами, основанная на "
                 "фреймворке FastAPI.",
