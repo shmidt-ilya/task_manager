@@ -41,6 +41,14 @@ class User(SQLModel, table=True):
     password: str | None
     name: str
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "name": "Иван Иванов",
+                "email": "user@example.com",
+                "password": "qwerty"
+            }
+        }
 
 class Project(SQLModel, table=True):
     project_id: int = SQLField(default=None, nullable=False, primary_key=True)
