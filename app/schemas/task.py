@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from pydantic import BaseModel, Field, BeforeValidator
 from typing import Optional, Annotated, TypeAlias
+from sqlalchemy import UniqueConstraint
 from sqlmodel import SQLModel, Field as SQLField
 
 
@@ -34,6 +35,7 @@ class TaskRead(TaskCreate):
 
 
 class User(SQLModel, table=True):
+    __table_args__ = (UniqueConstraint("email"),)
     user_id: int = SQLField(default=None, nullable=False, primary_key=True)
     email: str = SQLField(nullable=True, unique_items=True)
     password: str | None

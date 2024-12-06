@@ -1,6 +1,6 @@
 """create task table
 
-Revision ID: 3e56004a3a9e
+Revision ID: 964620746a86
 Revises: 
 Create Date: 2024-11-29 23:00:05.400000
 
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '3e56004a3a9e'
+revision: str = '964620746a86'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
