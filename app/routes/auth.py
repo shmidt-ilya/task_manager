@@ -18,7 +18,7 @@ def create_user(user: schema_task.User,
     new_user = schema_task.User(
         name=user.name,
         email=user.email,
-        password=user.password
+        password=auth_handler.get_password_hash(user.password)
     )
     try:
         session.add(new_user)
@@ -47,6 +47,9 @@ def user_login(login_attempt_data: OAuth2PasswordRequestForm = Depends(),
         )
 
     if existing_user.password == login_attempt_data.password:
+    if auth_handler.verify_password(
+            login_attempt_data.password,
+            existing_user.password):
         access_token = auth_handler.create_access_token(
             existing_user.user_id)
         return {
