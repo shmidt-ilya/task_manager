@@ -6,6 +6,8 @@ from sqlalchemy.exc import IntegrityError
 from psycopg2.errors import UniqueViolation
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from ..auth import auth_handler
+from app.config import settings
+from datetime import timedelta
 
 
 router = APIRouter(prefix="/auth", tags=["Безопасность"])
@@ -49,8 +51,11 @@ def user_login(login_attempt_data: OAuth2PasswordRequestForm = Depends(),
     if auth_handler.verify_password(
             login_attempt_data.password,
             existing_user.password):
+        access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
         access_token = auth_handler.create_access_token(
-            existing_user.user_id)
+            data={"sub": login_attempt_data.username},
+            expires_delta=access_token_expires
+        )
         return {
             "access_token": access_token,
             "token_type": "bearer"
