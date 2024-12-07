@@ -11,7 +11,7 @@ from ..auth import auth_handler
 router = APIRouter(prefix="/auth", tags=["Безопасность"])
 
 @router.post("/signup", status_code=status.HTTP_201_CREATED,
-             response_model=schema_task.User,
+             response_model=int,
              summary = 'Добавить пользователя')
 def create_user(user: schema_task.User,
                 session: Session = Depends(get_session)):
@@ -24,7 +24,7 @@ def create_user(user: schema_task.User,
         session.add(new_user)
         session.commit()
         session.refresh(new_user)
-        return new_user
+        return new_user.user_id
     except IntegrityError as e:
         assert isinstance(e.orig, UniqueViolation)
         raise HTTPException(
@@ -46,7 +46,6 @@ def user_login(login_attempt_data: OAuth2PasswordRequestForm = Depends(),
             detail=f"User {login_attempt_data.username} not found"
         )
 
-    if existing_user.password == login_attempt_data.password:
     if auth_handler.verify_password(
             login_attempt_data.password,
             existing_user.password):
