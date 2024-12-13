@@ -35,7 +35,8 @@ def create_user(user: schema_task.User,
         )
 
 
-@router.post("/login", status_code=status.HTTP_200_OK)
+@router.post("/login", status_code=status.HTTP_200_OK,
+             summary = 'Войти в систему')
 def user_login(login_attempt_data: OAuth2PasswordRequestForm = Depends(),
                db_session: Session = Depends(get_session)):
     statement = (select(schema_task.User)

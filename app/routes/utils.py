@@ -29,7 +29,8 @@ def show_access_token(token: str = Depends(oauth2_scheme)):
     return {"token": token}
 
 
-@router.get("/me", response_model=int)
+@router.get("/me", response_model=int,
+            summary = 'Получить ID вошедшего пользователя')
 def read_users_me(
     current_user: Annotated[User, Depends(get_current_user)]
 ):
