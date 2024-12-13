@@ -8,11 +8,19 @@ from sqlmodel import SQLModel
 
 from alembic import context
 
+from app.config import settings as cnf
 from app.schemas.task import Task, User, Project
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+section = config.config_ini_section
+config.set_section_option(section, "db_username", cnf.db_username)
+config.set_section_option(section, "db_password", cnf.db_password)
+config.set_section_option(section, "db_host", cnf.db_host)
+config.set_section_option(section, "db_port", str(cnf.db_port))
+config.set_section_option(section, "db_name", cnf.db_name)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
