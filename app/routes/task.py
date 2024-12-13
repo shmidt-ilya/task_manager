@@ -53,7 +53,7 @@ def update_task_by_id(task_id: int, data_for_update: dict):
     if not set(data_for_update.keys()) <= task_fields:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"An update request must only contain one or more of the following fields: {", ".join(task_fields)}."
+            detail=f"An update request must only contain one or more of the following fields: {', '.join(task_fields)}."
         )
 
     task = update_task_in_csv(task_id, data_for_update)
