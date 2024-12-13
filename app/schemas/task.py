@@ -1,5 +1,6 @@
 from datetime import date, timedelta
-from pydantic import BaseModel, Field, BeforeValidator, EmailStr
+from pydantic import (BaseModel, Field, BeforeValidator, EmailStr)
+from pydantic_settings import SettingsConfigDict
 from typing import Optional, Annotated, TypeAlias
 from sqlalchemy import UniqueConstraint
 from sqlmodel import SQLModel, Field as SQLField
@@ -41,26 +42,26 @@ class User(SQLModel, table=True):
     password: str | None
     name: str
 
-    class Config:
+    model_config = SettingsConfigDict(
         json_schema_extra = {
             "example": {
                 "name": "Иван Иванов",
                 "email": "user@example.com",
                 "password": "qwerty"
             }
-        }
+        })
 
 class UserCrendentials(BaseModel):
     email: EmailStr
     password: str
 
-    class Config:
+    model_config = SettingsConfigDict(
         json_schema_extra = {
             "example": {
                 "email": "user@example.com",
                 "password": "querty"
             }
-        }
+        })
 
 class Project(SQLModel, table=True):
     project_id: int = SQLField(default=None, nullable=False, primary_key=True)
