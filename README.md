@@ -133,6 +133,61 @@ task_manager/
 └── .pylintrc
 ```
 
+# Task Manager API
+
+REST API для системы управления задачами, разработанное с использованием FastAPI и SQLModel.
+
+## Описание
+
+Task Manager API - это система управления задачами, которая позволяет:
+- Управлять проектами и задачами
+- Назначать задачи сотрудникам
+- Отслеживать статус выполнения задач
+- Управлять навыками и специализациями сотрудников
+- Автоматически распределять задачи между сотрудниками
+
+## ER-диаграмма
+
+```mermaid
+erDiagram
+    User ||--o{ Employee : "имеет"
+    User {
+        int user_id PK
+        string name
+        string email
+        string password
+    }
+    
+    Employee ||--o{ Task : "выполняет"
+    Employee {
+        int employee_id PK
+        int user_id FK
+        string position
+        string specialization
+        json current_workload
+        json skills
+        boolean is_available
+    }
+    
+    Project ||--o{ Task : "содержит"
+    Project {
+        int project_id PK
+        string project_name
+        string project_description
+    }
+    
+    Task {
+        int task_id PK
+        int project_id FK
+        int assignee FK
+        string task_description
+        enum complexity
+        date due_date
+        string status
+    }
+```
+
+## Технологии
 ## Лицензия
 
 MIT
