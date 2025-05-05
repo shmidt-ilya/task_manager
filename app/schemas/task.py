@@ -4,6 +4,7 @@ from pydantic_settings import SettingsConfigDict
 from typing import Optional, Annotated, TypeAlias
 from sqlalchemy import UniqueConstraint
 from sqlmodel import SQLModel, Field as SQLField
+from .employee import TaskComplexity
 
 
 def _empty_str_or_none(value: str | None) -> None:
@@ -20,7 +21,11 @@ class TaskCreate(BaseModel):
         description="Описание задачи",
         max_length=300
     )
-    assignee: str
+    assignee: int = Field(description="ID сотрудника, которому назначается задача")
+    complexity: TaskComplexity = Field(
+        description="Сложность задачи",
+        default=TaskComplexity.MEDIUM
+    )
     due_date: Optional[date] = Field(
         description="Крайний срок исполнения задачи. "
                     "Не допускаются даты, более ранние, "
@@ -72,5 +77,7 @@ class Project(SQLModel, table=True):
 class Task(SQLModel, TaskRead, table=True):
     task_id: int = SQLField(default=None, nullable=False, primary_key=True)
     due_date: date
-    assignee: int = SQLField(foreign_key="user.user_id")
+    assignee: int = SQLField(foreign_key="employee.employee_id")
     project: int = SQLField(default=None, nullable=True, foreign_key="project.project_id")
+    complexity: TaskComplexity = SQLField(default=TaskComplexity.MEDIUM)
+    status: str = SQLField(default="new")  # new, in_progress, completed, reassigned

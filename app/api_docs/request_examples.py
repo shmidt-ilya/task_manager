@@ -8,8 +8,8 @@ example_create_task = Body(
             "description": "Типовой запрос для создания задачи",
             "value": {
                 "task_description": "Подготовить презентацию",
-                "assignee": "Василий",
-                "due_date": "2025-01-20"
+                "assignee": "123",
+                "due_date": "2025-05-26"
             }
         },
         "empty_date": {

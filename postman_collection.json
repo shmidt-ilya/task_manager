@@ -1,0 +1,240 @@
+{
+	"info": {
+		"_postman_id": "your-collection-id",
+		"name": "Task Manager API",
+		"description": "API для управления задачами и сотрудниками",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Аутентификация",
+			"item": [
+				{
+					"name": "Регистрация",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"testpassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Вход",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test@example.com\",\n    \"password\": \"testpassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Сотрудники",
+			"item": [
+				{
+					"name": "Добавить навык сотруднику",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Python\",\n    \"level\": \"middle\",\n    \"years_of_experience\": 3.5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/employees/1/skills",
+							"host": ["{{base_url}}"],
+							"path": ["employees", "1", "skills"]
+						}
+					}
+				},
+				{
+					"name": "Оценить квалификацию",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/employees/1/qualification?required_skills=[\"Python\",\"FastAPI\"]&min_level=middle",
+							"host": ["{{base_url}}"],
+							"path": ["employees", "1", "qualification"],
+							"query": [
+								{
+									"key": "required_skills",
+									"value": "[\"Python\",\"FastAPI\"]"
+								},
+								{
+									"key": "min_level",
+									"value": "middle"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Обновить доступность",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_available\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/employees/1/availability",
+							"host": ["{{base_url}}"],
+							"path": ["employees", "1", "availability"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Задачи",
+			"item": [
+				{
+					"name": "Создать задачу",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test Task\",\n    \"description\": \"Test Description\",\n    \"complexity\": \"medium\",\n    \"assignee\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks",
+							"host": ["{{base_url}}"],
+							"path": ["v1", "tasks"]
+						}
+					}
+				},
+				{
+					"name": "Получить список задач",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/v1/tasks",
+							"host": ["{{base_url}}"],
+							"path": ["v1", "tasks"]
+						}
+					}
+				},
+				{
+					"name": "Переназначить задачу",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/v1/tasks/1/reassign",
+							"host": ["{{base_url}}"],
+							"path": ["v1", "tasks", "1", "reassign"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "your-jwt-token",
+			"type": "string"
+		}
+	]
+} 

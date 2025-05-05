@@ -1,0 +1,103 @@
+[MASTER]
+# Используем Python 3
+python-version=3.8
+
+# Игнорируем директории
+ignore=CVS,venv,.git,__pycache__
+
+# Максимальная длина строки
+max-line-length=120
+
+# Максимальное количество аргументов функции
+max-args=10
+
+# Максимальное количество атрибутов класса
+max-attributes=15
+
+# Максимальное количество публичных методов класса
+max-public-methods=20
+
+# Максимальное количество локальных переменных
+max-locals=25
+
+# Максимальное количество возвращаемых значений
+max-returns=6
+
+# Максимальное количество веток
+max-branches=15
+
+# Максимальное количество операторов
+max-statements=50
+
+[MESSAGES CONTROL]
+# Отключаем некоторые предупреждения
+disable=C0111,  # missing-docstring
+        C0103,  # invalid-name
+        C0301,  # line-too-long
+        W0311,  # bad-indentation
+        W0603,  # global-statement
+        R0903,  # too-few-public-methods
+        R0913,  # too-many-arguments
+        R0914,  # too-many-locals
+        R0915,  # too-many-statements
+        W0703,  # broad-except
+        C0330,  # bad-continuation
+        C0326,  # bad-whitespace
+
+[FORMAT]
+# Максимальная длина строки
+max-line-length=120
+
+# Максимальная длина имени
+max-name-length=50
+
+# Максимальная длина имени функции
+max-func-length=50
+
+# Максимальная длина имени класса
+max-class-length=50
+
+[REPORTS]
+# Формат вывода
+output-format=text
+
+# Включаем статистику
+reports=yes
+
+# Показывать сообщения по категориям
+msg-template={path}:{line}: [{msg_id}({symbol}), {obj}] {msg}
+
+[DESIGN]
+# Максимальное количество аргументов функции
+max-args=10
+
+# Максимальное количество атрибутов класса
+max-attributes=15
+
+# Максимальное количество публичных методов класса
+max-public-methods=20
+
+# Максимальное количество локальных переменных
+max-locals=25
+
+# Максимальное количество возвращаемых значений
+max-returns=6
+
+# Максимальное количество веток
+max-branches=15
+
+# Максимальное количество операторов
+max-statements=50
+
+[SIMILARITIES]
+# Минимальная длина похожих строк
+min-similarity-lines=4
+
+# Игнорировать комментарии
+ignore-comments=yes
+
+# Игнорировать docstrings
+ignore-docstrings=yes
+
+# Игнорировать импорты
+ignore-imports=yes 
